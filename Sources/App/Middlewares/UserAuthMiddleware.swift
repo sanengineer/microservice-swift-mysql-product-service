@@ -8,8 +8,7 @@
 import Vapor
 
 final class UserAuthMiddleware: Middleware {
-    let authHostname: String = Environment.get("AUTH_HOSTNAME")!
-    let authPort: Int = Int(Environment.get("AUTH_PORT")!)!
+    let authUrl: String 
     
     func respond(to request: Request, chainingTo next: Responder) -> EventLoopFuture<Response> {
         guard let token = request.headers.bearerAuthorization else {
@@ -18,7 +17,7 @@ final class UserAuthMiddleware: Middleware {
         
         return request
             .client
-            .post("http://\(authHostname):\(authPort)/user/auth/authenticate", beforeSend: {
+            .post("\(authUrl)/user/auth/authenticate", beforeSend: {
                 authRequest in
                 
                 try authRequest.content.encode(AuthenticateData(token: token.token))
