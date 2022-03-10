@@ -11,6 +11,10 @@ public func configure(_ app: Application) throws {
         return print("No Env Server Hostname")
     }
 
+    guard let databaseUrl = Environment.get("DATABASE_URL") else {
+        return print("DATABSE_URL not set")
+    }
+
     if let envPort = Environment.get("PRODUCT_PORT"){
         port = Int(envPort) ?? 8081
     } else {
@@ -20,10 +24,12 @@ public func configure(_ app: Application) throws {
     var tls = TLSConfiguration.makeClientConfiguration()
     tls.certificateVerification = .none
 
+    // var mysqlConfig = MySQLConfiguration(url: databaseUrl)
+   
 
     switch app.environment {
         case .production:
-            app.databases.use(.mysql(url:"DATABASE_URL"))
+            app.databases.use(try .mysql(url: databaseUrl), as: .mysql)
         default:
             app.databases.use(.mysql(
                 hostname: Environment.get("DB_HOSTNAME")!,
