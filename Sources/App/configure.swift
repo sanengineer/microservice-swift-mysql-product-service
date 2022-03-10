@@ -23,7 +23,7 @@ public func configure(_ app: Application) throws {
 
     switch app.environment {
         case .production:
-            app.database.use(.mysql(url:"DATABASE_URL"))
+            app.databases.use(.mysql(url:"DATABASE_URL"))
         default:
             app.databases.use(.mysql(
                 hostname: Environment.get("DB_HOSTNAME")!,
