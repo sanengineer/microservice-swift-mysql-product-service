@@ -9,12 +9,16 @@ import Vapor
 
 final class UserAuthMiddleware: Middleware {
     
-    let authUrl: String = Environment.get("SERVER_URL")!
+    let authUrl: String = Environment.get("AUTH_URL")!
+
     
     func respond(to request: Request, chainingTo next: Responder) -> EventLoopFuture<Response> {
         guard let token = request.headers.bearerAuthorization else {
             return request.eventLoop.future(error: Abort(.unauthorized))
         }
+
+        //debug
+        print("AUTH_URL: \(authUrl)")
         
         return request
             .client

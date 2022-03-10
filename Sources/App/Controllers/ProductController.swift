@@ -3,14 +3,15 @@ import Fluent
 
 struct ProductController: RouteCollection {
     func boot(routes: RoutesBuilder) throws {
-        let productRouteGroup = routes.grouped("todos")
-        let authProductRouteGroup = productRouteGroup.grouped(UserAuthMiddleware())
+        let authMiddleware = UserAuthMiddleware()
+        let productRouteGroup = routes.grouped("product")
+        let authProductRouteGroup = productRouteGroup.grouped(authMiddleware)
         
-        productRouteGroup.get(use: readAllHandler)
-        productRouteGroup.get("result", use: searchHandler)
-        productRouteGroup.get("count", use: countHandler)
-        productRouteGroup.get("category", ":category_id", use: searchByCategoryId)
-        productRouteGroup.group(":product_id") { product in
+        authProductRouteGroup.get(use: readAllHandler)
+        authProductRouteGroup.get("result", use: searchHandler)
+        authProductRouteGroup.get("count", use: countHandler)
+        authProductRouteGroup.get("category", ":category_id", use: searchByCategoryId)
+        authProductRouteGroup.group(":product_id") { product in
             product.get(use: readOneHandler)
             product.put("category", use: updateCategoryId)
         }
