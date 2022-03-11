@@ -6,13 +6,14 @@ import FluentMySQLDriver
 // configures your application
 public func configure(_ app: Application) throws {
     let port: Int
-    var tls = TLSConfiguration.makeClientConfiguration()
-    tls.certificateVerification = .none
+   
 
     if let dbUrlEnv = Environment.get("DATABASE_URL") {
         app.databases.use(try .mysql(url: dbUrlEnv), as: .mysql)
     } else {
         if  Environment.get("PORT") == nil {
+            var tls = TLSConfiguration.makeClientConfiguration()
+            tls.certificateVerification = .none
             guard let serverHostname = Environment.get("SERVER_HOSTNAME") else {
                 return print("No Env Server Hostname")
             }
@@ -32,6 +33,8 @@ public func configure(_ app: Application) throws {
             app.http.server.configuration.hostname = serverHostname
             app.http.server.configuration.port = port
         } else {
+            var tls = TLSConfiguration.makeClientConfiguration()
+            tls.certificateVerification = .fullVerification
             app.databases.use(.mysql(
             hostname: Environment.get("DB_HOSTNAME")!,
             port: Environment.get("DB_PORT").flatMap(Int.init(_:))!,
