@@ -8,7 +8,7 @@ public func configure(_ app: Application) throws {
     let port: Int
    
     if let dbUrlEnv = Environment.get("DATABASE_URL") {
-        app.databases.use(try .mysql(url: dbUrlEnv), as: .mysql)
+        try app.databases.use(.mysql(url: dbUrlEnv), as: .mysql)
     } else {
         var tls = TLSConfiguration.makeClientConfiguration()
         tls.certificateVerification = .none
@@ -45,23 +45,20 @@ public func configure(_ app: Application) throws {
 
     // Add the default error middleware
     let error = ErrorMiddleware.default(environment: app.environment)
+
     // Clear any existing middleware.
     app.middleware = .init()
     app.middleware.use(cors)
     app.middleware.use(routeLogging)
     app.middleware.use(error)
 
-    app.migrations.add(
-        CreateSchemaProduct() , to: .mysql
-    )
+    // app.migrations.add(
+    //     CreateSchemaProduct() , to: .mysql
+    // )
     app.logger.logLevel = .debug
     
-
     // migration db
-    try app.autoMigrate().wait()
-
-    // print("CONFIG", app.databases)
-    
+    // try app.autoMigrate().wait()
 
     // register routes
     try routes(app)
