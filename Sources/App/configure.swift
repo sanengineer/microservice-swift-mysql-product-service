@@ -31,9 +31,8 @@ public func configure(_ app: Application) throws {
             ), as: .mysql)
             app.http.server.configuration.hostname = serverHostname
             app.http.server.configuration.port = port
-        }
-
-        app.databases.use(.mysql(
+        } else {
+            app.databases.use(.mysql(
             hostname: Environment.get("DB_HOSTNAME")!,
             port: Environment.get("DB_PORT").flatMap(Int.init(_:))!,
             username: Environment.get("DB_USERNAME")!,
@@ -41,7 +40,7 @@ public func configure(_ app: Application) throws {
             database: Environment.get("DB_NAME")!,
             tlsConfiguration: tls
             ), as: .mysql)
-        
+        }
     }
 
 
