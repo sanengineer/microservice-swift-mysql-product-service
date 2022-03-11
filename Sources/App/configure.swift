@@ -52,13 +52,13 @@ public func configure(_ app: Application) throws {
     app.middleware.use(routeLogging)
     app.middleware.use(error)
 
-    // app.migrations.add(
-    //     CreateSchemaProduct() , to: .mysql
-    // )
+    app.migrations.add(
+        CreateSchemaProduct() , to: .mysql
+    )
     app.logger.logLevel = .debug
     
     // migration db
-    // try app.autoMigrate().wait()
+    try app.autoMigrate().wait()
 
     // register routes
     try routes(app)
