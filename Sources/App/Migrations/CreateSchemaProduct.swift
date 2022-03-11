@@ -17,6 +17,8 @@ struct CreateSchemaProduct: Migration {
             .field("image_gallery_id", .uuid)
             .unique(on: "sku")
             .unique(on: "image_gallery_id")
+            .field("created_at", .datetime)
+            .field("updated_at", .datetime)
             .create()
     }
     
