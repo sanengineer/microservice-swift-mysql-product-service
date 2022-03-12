@@ -3,24 +3,25 @@ import Fluent
 
 struct ProductController: RouteCollection {
     func boot(routes: RoutesBuilder) throws {
-        let authMiddleware = UserAuthMiddleware()
+        let authSuperUser = SuperUserAuthMiddleware()
+        let authMidUser = MidUserAuthMiddleware()
+        let authUser = UserAuthMiddleware()
         let productRouteGroup = routes.grouped("product")
-        let authProductRouteGroup = productRouteGroup.grouped(authMiddleware)
+
+        let authSuperUserProductRouteGroup = productRouteGroup.grouped(authSuperUser)
+        let authMidUserProductRouteGroup = productRouteGroup.grouped(authMidUser)
+        let authUserProductRouteGroup = productRouteGroup.grouped(authUser)
         
-        authProductRouteGroup.get(use: readAllHandler)
-        authProductRouteGroup.get("result", use: searchHandler)
-        authProductRouteGroup.get("count", use: countHandler)
-        authProductRouteGroup.get("category", ":category_id", use: searchByCategoryId)
-        authProductRouteGroup.group(":product_id") { product in
-            product.get(use: readOneHandler)
-            product.put("category", use: updateCategoryId)
-        }
+        authUserProductRouteGroup.get(use: readAllHandler)
+        authUserProductRouteGroup.get("result", use: searchHandler)
+        authUserProductRouteGroup.get("count", use: countHandler)
+        authUserProductRouteGroup.get("category", ":category_id", use: searchByCategoryId)
+        authUserProductRouteGroup.get(":product_id", use: readOneHandler)
         
-        authProductRouteGroup.post(use: createHandler)
-        authProductRouteGroup.group(":product_id") { product in
-            product.put(use: updateHandler)
-            product.delete(use: deleteHandler)
-        }
+        authMidUserProductRouteGroup.post(use: createHandler)
+        authMidUserProductRouteGroup.put(":product_id", use: updateCategoryId) 
+
+        authSuperUserProductRouteGroup.delete(":product_id", use: deleteHandler)
     }
 
     func createHandler(_ req: Request) throws -> EventLoopFuture<Product> {

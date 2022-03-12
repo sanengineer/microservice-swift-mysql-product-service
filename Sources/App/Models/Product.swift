@@ -43,10 +43,16 @@ final class Product: Model {
     
     @Field(key: "image_gallery_id")
     var image_gallery_id: UUID?
+
+    @Timestamp(key: "created_at", on: .create)
+    var created_at: Date?
+    
+    @Timestamp(key: "updated_at", on: .update)
+    var updated_at: Date?
     
     init() {}
     
-    init(id: UUID? = nil, name: String, description:String, price: Int, image_featured: String, sku: String, stock: Float, category_id: UUID, varian_id: UUID, topping_id: UUID, image_gallery_id: UUID) {
+    init(id: UUID? = nil, name: String, description:String, price: Int, image_featured: String, sku: String, stock: Float, category_id: UUID, varian_id: UUID, topping_id: UUID, image_gallery_id: UUID, created_at: Date?, updated_at: Date?) {
         self.id = id
         self.name = name
         self.description = description
@@ -58,7 +64,8 @@ final class Product: Model {
         self.varian_id = varian_id
         self.topping_id = topping_id
         self.image_gallery_id = image_gallery_id
-        
+        self.created_at = created_at
+        self.updated_at = updated_at
     }
 }
 
