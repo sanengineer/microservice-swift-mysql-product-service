@@ -19,7 +19,8 @@ struct ProductController: RouteCollection {
         authUserProductRouteGroup.get(":product_id", use: readOneHandler)
         
         authMidUserProductRouteGroup.post(use: createHandler)
-        authMidUserProductRouteGroup.put(":product_id", use: updateCategoryId) 
+        authMidUserProductRouteGroup.put(":product_id", use: updateCategoryId)
+        authMidUserProductRouteGroup.put(":product_id", use: updateHandler)
 
         authSuperUserProductRouteGroup.delete(":product_id", use: deleteHandler)
     }
