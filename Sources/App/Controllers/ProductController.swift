@@ -32,7 +32,7 @@ struct ProductController: RouteCollection {
 
     
     func updateHandler(_ req: Request) throws -> EventLoopFuture<ProductUpdate> {
-        let updateProduct = try req.content.decode(Product.self)
+        let updateProduct = try req.content.decode(ProductUpdate.self)
 
         return Product.find(req.parameters.get("product_id"), on: req.db)
             .unwrap(or: Abort(.notFound))
