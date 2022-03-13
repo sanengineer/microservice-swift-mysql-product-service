@@ -37,10 +37,11 @@ struct ProductController: RouteCollection {
         return Product.find(req.parameters.get("product_id"), on: req.db)
             .unwrap(or: Abort(.notFound))
             .flatMap { product in
-                product.description = updateProduct.description
-                product.name = updateProduct.name
-                product.price = updateProduct.price
-                product.image_featured = updateProduct.image_featured
+
+                product.description = updateProduct.description ?? product.description
+                product.name = updateProduct.name ?? product.name
+                product.price = updateProduct.price ?? product.price
+                product.image_featured = updateProduct.image_featured ?? product.image_featured
                 
                 return product.save(on: req.db).map{product}
             }
