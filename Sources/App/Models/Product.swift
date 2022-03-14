@@ -35,12 +35,6 @@ final class Product: Model {
     @Field(key: "category_id")
     var category_id : UUID?
     
-    @Field(key: "varian_id")
-    var varian_id: UUID?
-    
-    @Field(key: "topping_id")
-    var topping_id: UUID?
-    
     @Field(key: "image_gallery_id")
     var image_gallery_id: UUID?
 
@@ -52,7 +46,7 @@ final class Product: Model {
     
     init() {}
     
-    init(id: UUID? = nil, name: String, description:String, price: Int, image_featured: String, sku: String, stock: Float, category_id: UUID, varian_id: UUID, topping_id: UUID, image_gallery_id: UUID, created_at: Date?, updated_at: Date?) {
+    init(id: UUID? = nil, name: String, description:String, price: Int, image_featured: String, sku: String, stock: Float, category_id: UUID, image_gallery_id: UUID, created_at: Date?, updated_at: Date?) {
         self.id = id
         self.name = name
         self.description = description
@@ -61,8 +55,6 @@ final class Product: Model {
         self.sku = sku
         self.stock = stock
         self.category_id = category_id
-        self.varian_id = varian_id
-        self.topping_id = topping_id
         self.image_gallery_id = image_gallery_id
         self.created_at = created_at
         self.updated_at = updated_at
@@ -80,11 +72,9 @@ final class ProductUpdate: Content, Codable {
     var sku: String?
     var stock: Float?
     var category_id: UUID?
-    var varian_id: UUID?
-    var topping_id: UUID?
     var image_gallery_id: UUID?
 
-    init(name: String?, description: String?, price: Int?, image_featured: String?, sku: String?, stock: Float?, category_id: UUID?, varian_id: UUID?, topping_id: UUID?, image_gallery_id: UUID?) {
+    init(name: String?, description: String?, price: Int?, image_featured: String?, sku: String?, stock: Float?, category_id: UUID?, image_gallery_id: UUID?) {
         self.name = name
         self.description = description
         self.price = price
@@ -92,8 +82,6 @@ final class ProductUpdate: Content, Codable {
         self.sku = sku
         self.stock = stock
         self.category_id = category_id
-        self.varian_id = varian_id
-        self.topping_id = topping_id
         self.image_gallery_id = image_gallery_id
     }
 }
