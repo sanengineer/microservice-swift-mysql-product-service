@@ -19,7 +19,7 @@ struct ProductController: RouteCollection {
         authUserProductRouteGroup.get(":product_id", use: readOneHandler)
         
         authMidUserProductRouteGroup.post(use: createHandler)
-        authMidUserProductRouteGroup.put(":product_id", use: updateCategoryId)
+        // authMidUserProductRouteGroup.put("category", use: updateCategoryId)
         authMidUserProductRouteGroup.put(":product_id", use: updateHandler)
 
         authSuperUserProductRouteGroup.delete(":product_id", use: deleteHandler)
@@ -42,6 +42,7 @@ struct ProductController: RouteCollection {
                 product.name = updateProduct.name ?? product.name
                 product.price = updateProduct.price ?? product.price
                 product.image_featured = updateProduct.image_featured ?? product.image_featured
+                product.category_id = updateProduct.category_id ?? product.category_id
                 
                 return product.save(on: req.db).map{product}
             }
